@@ -1,42 +1,30 @@
 import { readdir } from "fs/promises";
 
+const GITHUB_USER = "JuanManuelPovedaR";   // tu usuario de GitHub
+const REPO = "BackImg";                   // nombre de tu repo
+const BRANCH = "main";                    // rama (main/master)
+const FOLDER = "images";                  // carpeta donde guardas las imágenes
+
 const server = Bun.serve({
   port: 3000,
-  async fetch(req) {
-    const url = new URL(req.url);
-
-    // Servir imágenes directamente
-    if (url.pathname.startsWith("/images/")) {
-      const imagePath = `./images${url.pathname.replace("/images", "")}`;
-      const file = Bun.file(imagePath);
-
-      if (!(await file.exists())) {
-        return new Response("Imagen no encontrada", { status: 404 });
-      }
-
-      return new Response(file, {
-        headers: {
-          "Content-Type": file.type || "application/octet-stream",
-        },
-      });
-    }
-
-    return new Response("Servidor corriendo 🚀\nRevisa la consola para ver las URLs de las imágenes");
+  fetch() {
+    return new Response("Servidor corriendo 🚀\nMira la consola para ver las URLs RAW");
   },
 });
 
 console.log(`Servidor corriendo en http://localhost:${server.port}`);
 
-// 🔥 Leer la carpeta y mostrar las URLs en consola
+// 📸 Generar enlaces RAW de GitHub y mostrarlos en consola
 (async () => {
   try {
-    const files = await readdir("./images");
-    console.log("\n📸 Imágenes disponibles:\n");
+    const files = await readdir(`./${FOLDER}`);
+    console.log("\n📸 Enlaces RAW de GitHub:\n");
     files.forEach((file) => {
-      console.log(`${file} -> http://localhost:${server.port}/images/${file}`);
+      const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO}/${BRANCH}/${FOLDER}/${file}`;
+      console.log(`${file} -> ${url}`);
     });
-    console.log("\n");
+    console.log("\n⚠️ Recuerda: hasta que no hagas 'git add/commit/push' esos enlaces no funcionarán.\n");
   } catch (err) {
-    console.error("Error leyendo carpeta ./images:", err);
+    console.error("❌ Error leyendo carpeta de imágenes:", err);
   }
 })();
