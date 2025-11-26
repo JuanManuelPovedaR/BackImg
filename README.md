@@ -44,7 +44,10 @@ backimg/
 ├── package.json            # Configuración y dependencias del proyecto
 ├── README.md               # Documentación del proyecto
 └── tsconfig.json           # Configuración de TypeScript
-Explicación de las carpetas
+
+-------------------------------------
+# Explicación de las carpetas
+-------------------------------------
 src/ - Contiene el código fuente principal de la aplicación
 
 main.ts - Servidor principal que maneja todas las rutas y lógica de la aplicación
